@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29424.173
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebForms_Owin_TestApp", "WebForms_Owin_TestApp.csproj", "{065C1FC6-3FAD-4C56-AB20-86C33B349824}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebForms_Owin_TestApp.Tests", "..\WebForms_Owin_TestApp.Tests\WebForms_Owin_TestApp.Tests.csproj", "{E69A8538-47E7-4982-9662-C5B25164F732}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebForms_Owin_TestApp.UTests", "Tests\UTest\WebForms_Owin_TestApp.UTests.csproj", "{E69A8538-47E7-4982-9662-C5B25164F732}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
