@@ -58,21 +58,12 @@ namespace WebForms_Owin_TestApp.Account {
         protected global::System.Web.UI.WebControls.CheckBox RememberMe;
         
         /// <summary>
-        /// RegisterHyperLink control.
+        /// btnLogIn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink RegisterHyperLink;
-        
-        /// <summary>
-        /// OpenAuthLogin control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::WebForms_Owin_TestApp.Account.OpenAuthProviders OpenAuthLogin;
+        protected global::System.Web.UI.WebControls.Button btnLogIn;
     }
 }
