@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using Microsoft.Owin.Security.Cookies;
 using System;
 using System.Web;
 
@@ -15,9 +15,7 @@ namespace WebForms_Owin_TestApp.Account
         private void Signout()
         {
             //This uses OWIN authentication
-            var ctx = Request.GetOwinContext();
-            var authenticationManager = ctx.Authentication;
-            LoginHelper.AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            LoginHelper.AuthenticationManager.SignOut(CookieAuthenticationDefaults.AuthenticationType);
 
             HttpContext.Current.User = null;
         }
