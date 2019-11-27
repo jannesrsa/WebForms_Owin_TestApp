@@ -62,7 +62,7 @@
                         <LoggedInTemplate>
                             <ul class="nav navbar-nav navbar-right">
                                 <li>
-                                    <span class="navbar-text">Hello, <%: Context.User.Identity.GetUserName()  %> !</span>
+                                    <span class="navbar-text">Hello, <%: Context.User.Identity.Name  %> !</span>
                                 </li>
                                 <li>
                                     <asp:LoginStatus runat="server" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/Account/Logout" />
