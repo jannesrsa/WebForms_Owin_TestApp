@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security;
-using System;
-using System.Collections.Generic;
-using System.Security.Claims;
+﻿using System;
 using System.Web;
-using System.Web.Security;
 using System.Web.UI;
+using WebForms_Owin_TestApp.Services;
 
 namespace WebForms_Owin_TestApp.Account
 {
@@ -19,38 +15,19 @@ namespace WebForms_Owin_TestApp.Account
         {
             if (IsValid)
             {
-                if (Membership.ValidateUser(Name.Text, Password.Text))
+                // usually this will be injected via DI. but creating this manually now for brevity
+                var authenticationManager = Context.GetOwinContext().Authentication;
+                var authService = new AdAuthenticationService(authenticationManager);
+
+                var authenticationResult = authService.SignIn(Name.Text, Password.Text, RememberMe.Checked);
+
+                if (authenticationResult.IsSuccess)
                 {
-                    // get user info
-                    var user = Membership.GetUser(Name.Text);
-
-                    // build a list of claims
-                    var claims = new List<Claim>();
-                    claims.Add(new Claim(ClaimTypes.Name, user.UserName));
-                    claims.Add(new Claim(ClaimTypes.NameIdentifier, user.ProviderUserKey.ToString()));
-
-                    if (Roles.Enabled)
-                    {
-                        foreach (var role in Roles.GetRolesForUser(user.UserName))
-                        {
-                            claims.Add(new Claim(ClaimTypes.Role, role));
-                        }
-                    }
-
-                    // create the identity
-                    var identity = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
-
-                    Context.GetOwinContext().Authentication.SignIn(new AuthenticationProperties()
-                    {
-                        IsPersistent = RememberMe.Checked
-                    },
-                    identity);
-
                     LoginHelper.RedirectToReturnUrl(Request.QueryString["ReturnUrl"], Response);
                 }
                 else
                 {
-                    FailureText.Text = "The credentials are not valid!";
+                    FailureText.Text = authenticationResult.ErrorMessage;
                     ErrorMessage.Visible = true;
                 }
             }
