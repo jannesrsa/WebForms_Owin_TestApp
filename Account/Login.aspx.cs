@@ -1,5 +1,5 @@
-﻿using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Cookies;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -38,7 +38,7 @@ namespace WebForms_Owin_TestApp.Account
                     }
 
                     // create the identity
-                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationType);
+                    var identity = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
 
                     Context.GetOwinContext().Authentication.SignIn(new AuthenticationProperties()
                     {
