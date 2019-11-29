@@ -15,6 +15,17 @@
                         </p>
                     </asp:PlaceHolder>
                     <div class="form-group">
+                        <asp:Label runat="server" AssociatedControlID="ddlAuthenticationType" CssClass="col-md-2 control-label">Authentication</asp:Label>
+                        <div class="col-md-6">
+                            <select class="form-control" id="ddlAuthenticationType" runat="server">
+                                <option hidden value="">Select the authentication type</option>
+                            </select>
+                            <asp:RequiredFieldValidator runat="server" ControlToValidate="ddlAuthenticationType"
+                                CssClass="text-danger" ErrorMessage="The authentication type field is required." />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class=""></label>
                         <asp:Label runat="server" AssociatedControlID="Name" CssClass="col-md-2 control-label">Name</asp:Label>
                         <div class="col-md-10">
                             <asp:TextBox runat="server" ID="Name" CssClass="form-control" TextMode="SingleLine" />

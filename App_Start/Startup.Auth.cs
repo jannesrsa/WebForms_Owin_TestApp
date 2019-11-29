@@ -1,11 +1,15 @@
-﻿using System;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Extensions;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.DataHandler;
+using Microsoft.Owin.Security.WsFederation;
 using Owin;
+using SourceCode.Security.Claims;
+using System;
+using System.Linq;
+using WebForms_Owin_TestApp.Helpers;
 
 namespace WebForms_Owin_TestApp
 {
@@ -51,6 +55,32 @@ namespace WebForms_Owin_TestApp
                 TicketDataFormat = cookieTicketDataFormat,
                 ExpireTimeSpan = TimeSpan.FromMinutes(5),
             });
+
+            var claimsServer = ConnectionHelper.GetServer<ClaimsManagement>();
+            var _currentRealm = claimsServer.GetRealm("https://k2.denallix.com/WebForms_Owin_TestApp/");
+
+            var realmPathBase = new Uri(_currentRealm.RealmUri).AbsolutePath;
+            var issuers = _currentRealm.Issuers.Where(iss => !string.IsNullOrWhiteSpace(iss.MetadataUrl) && iss.UseForLogin);
+
+            foreach (var issuer in issuers)
+            {
+                app.UseWsFederationAuthentication(new WsFederationAuthenticationOptions
+                {
+                    AuthenticationMode = AuthenticationMode.Passive,
+                    AuthenticationType = issuer.Name,
+                    Caption = issuer.Name,
+                    CallbackPath = new PathString($"{realmPathBase.ToLower()}signin-wsfed{issuer.ID.ToString()}"),
+                    MetadataAddress = issuer.MetadataUrl,
+                    Wtrealm = _currentRealm.RealmUri,
+
+                    TokenValidationParameters = new System.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                        SaveSigninToken = true,
+                    },
+
+                    Notifications = new WsFederationAuthenticationNotifications()
+                });
+            }
 
             app.UseStageMarker(PipelineStage.MapHandler);
 

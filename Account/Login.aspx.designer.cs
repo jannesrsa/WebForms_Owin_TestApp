@@ -33,6 +33,15 @@ namespace WebForms_Owin_TestApp.Account
         protected global::System.Web.UI.WebControls.Literal FailureText;
 
         /// <summary>
+        /// ddlAuthenticationType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlSelect ddlAuthenticationType;
+
+        /// <summary>
         /// Name control.
         /// </summary>
         /// <remarks>
