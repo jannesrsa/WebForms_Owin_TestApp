@@ -16,9 +16,7 @@
                     <div class="form-group">
                         <asp:Label runat="server" AssociatedControlID="ddlClaimsIssuer" CssClass="col-md-2 control-label">Claims Issuer</asp:Label>
                         <div class="col-md-10">
-                            <asp:DropDownList runat="server" CssClass="form-control" ID="ddlClaimsIssuer">
-                                <asp:ListItem Text="Local Active Directory" Value=""></asp:ListItem>
-                            </asp:DropDownList>
+                            <asp:DropDownList runat="server" CssClass="form-control" ID="ddlClaimsIssuer"></asp:DropDownList>
                             <span class="text-danger" style="visibility: hidden;">The claims issuer is required.</span>
                         </div>
                     </div>

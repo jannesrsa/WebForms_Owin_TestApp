@@ -1,5 +1,7 @@
 ﻿using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.WsFederation;
 using System;
+using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -36,27 +38,22 @@ namespace WebForms_Owin_TestApp.Account
 
         protected void LogIn(object sender, EventArgs e)
         {
-            if (IsValid)
+            var claimsService = new ClaimsService();
+            var issuer = claimsService.Issuers.FirstOrDefault(i => i.Name == ddlClaimsIssuer.SelectedItem.Text);
+
+            if (issuer == null)
             {
-                if (string.IsNullOrEmpty(ddlClaimsIssuer.SelectedValue))
-                {
-                    var authService = new AdAuthenticationService(AuthenticationManager);
-                    var authenticationResult = authService.SignIn(Name.Text, Password.Text, RememberMe.Checked);
-
-                    if (authenticationResult.IsSuccess)
-                    {
-                        LoginHelper.RedirectToReturnUrl(Request.QueryString["ReturnUrl"], Response);
-                    }
-                    else
-                    {
-                        FailureText.Text = authenticationResult.ErrorMessage;
-                        ErrorMessage.Visible = true;
-                    }
-                }
-
-                FailureText.Text = "External Claims Issuers not configured";
+                FailureText.Text = "Invalid issuer";
                 ErrorMessage.Visible = true;
+
+                return;
             }
+
+            AuthenticationManager.Challenge(new AuthenticationProperties
+            {
+                RedirectUri = Request.QueryString["ReturnUrl"]
+            },
+            WsFederationAuthenticationDefaults.AuthenticationType);
         }
     }
 }
