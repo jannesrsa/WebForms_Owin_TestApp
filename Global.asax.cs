@@ -9,7 +9,6 @@ namespace WebForms_Owin_TestApp
     {
         private void Application_Start(object sender, EventArgs e)
         {
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
             RouteTable.Routes.MapMvcAttributeRoutes();
             ViewEngines.Engines.Add(new RazorViewEngine());
         }

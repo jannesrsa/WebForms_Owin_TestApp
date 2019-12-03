@@ -2,6 +2,7 @@
 using Microsoft.Owin.Security.WsFederation;
 using System.Web;
 using System.Web.Mvc;
+using WebForms_Owin_TestApp.Models;
 using WebForms_Owin_TestApp.Services;
 
 namespace WebForms_Owin_TestApp.Controllers
@@ -23,36 +24,28 @@ namespace WebForms_Owin_TestApp.Controllers
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="provider"></param>
-        /// <param name="returnUrl"></param>
-        /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        [Route("account/externallogin")]
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
-            AuthenticationManager.Challenge(
-                new AuthenticationProperties()
-                {
-                    RedirectUri = returnUrl
-                },
-                WsFederationAuthenticationDefaults.AuthenticationType);
-
-            if (string.IsNullOrWhiteSpace(returnUrl))
-            {
-                returnUrl = "~/";
-            }
-
-            return Redirect(returnUrl);
+            return new ChallengeResult(WsFederationAuthenticationDefaults.AuthenticationType, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
 
+        [AllowAnonymous]
+        [Route("account/externallogincallback")]
+        public ActionResult ExternalLoginCallback(string returnUrl)
+        {
+            return RedirectToLocal(returnUrl);
+        }
+
+        [AllowAnonymous]
+        [Route("account/login")]
         public ActionResult Login(string returnUrl)
         {
             var claimsService = new ClaimsService();
-            var externalLoginViewModel = new Models.ExternalLoginViewModel()
+            var externalLoginViewModel = new ExternalLoginViewModel()
             {
                 ReturnUrl = returnUrl,
                 AuthenticationTypes = claimsService.AuthenticationTypes
@@ -61,10 +54,48 @@ namespace WebForms_Owin_TestApp.Controllers
             return View(externalLoginViewModel);
         }
 
+        [Route("account/logout")]
         public ActionResult Logout()
         {
             AuthenticationManager.SignOut();
             return Redirect("/");
+        }
+
+        private ActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                return Redirect("~/Default.aspx");
+            }
+        }
+
+        internal class ChallengeResult : HttpUnauthorizedResult
+        {
+            public ChallengeResult(string provider, string redirectUri)
+                : this(provider, redirectUri, null)
+            {
+            }
+
+            public ChallengeResult(string provider, string redirectUri, string userId)
+            {
+                LoginProvider = provider;
+                RedirectUri = redirectUri;
+                UserId = userId;
+            }
+
+            public string LoginProvider { get; set; }
+            public string RedirectUri { get; set; }
+            public string UserId { get; set; }
+
+            public override void ExecuteResult(ControllerContext context)
+            {
+                var properties = new AuthenticationProperties { RedirectUri = RedirectUri };
+                context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
+            }
         }
     }
 }
