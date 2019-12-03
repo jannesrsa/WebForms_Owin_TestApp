@@ -7,8 +7,9 @@ namespace WebForms_Owin_TestApp
 {
     public class Global : HttpApplication
     {
-        void Application_Start(object sender, EventArgs e)
+        private void Application_Start(object sender, EventArgs e)
         {
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
             RouteTable.Routes.MapMvcAttributeRoutes();
             ViewEngines.Engines.Add(new RazorViewEngine());
         }
