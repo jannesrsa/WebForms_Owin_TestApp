@@ -2,7 +2,7 @@
 using System;
 using System.Web;
 
-namespace WebForms_Owin_TestApp.Account
+namespace WebForms_Owin_TestApp.Helpers
 {
     public class LoginHelper
     {

@@ -1,4 +1,5 @@
-﻿using Microsoft.Owin.Security.WsFederation;
+﻿using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.WsFederation;
 using SourceCode.Security.Claims;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,18 @@ namespace WebForms_Owin_TestApp.Services
         public IEnumerable<Issuer> Issuers { get; }
 
         public string RealmPathBase { get; }
+
+        public IEnumerable<AuthenticationDescription> AuthenticationTypes
+        {
+            get
+            {
+                return this.Issuers.Select(i => new AuthenticationDescription()
+                {
+                    Caption = i.Name,
+                    AuthenticationType = i.IssuerName
+                });
+            }
+        }
 
         public string AuthenticationTypeForIssuer(Issuer issuer)
         {
