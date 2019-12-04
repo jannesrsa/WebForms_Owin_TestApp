@@ -20,7 +20,7 @@ namespace WebForms_Owin_TestApp
         {
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
-                AuthenticationType = WsFederationAuthenticationDefaults.AuthenticationType,
+                AuthenticationType = DefaultAuthenticationTypes.ExternalCookie,
                 LoginPath = new PathString("/account/login"),
                 LogoutPath = new PathString("/account/logout"),
             });
@@ -40,7 +40,7 @@ namespace WebForms_Owin_TestApp
                 app.UseWsFederationAuthentication(wsFederation);
             }
 
-            app.SetDefaultSignInAsAuthenticationType(WsFederationAuthenticationDefaults.AuthenticationType);
+            app.SetDefaultSignInAsAuthenticationType(DefaultAuthenticationTypes.ExternalCookie);
         }
     }
 }
