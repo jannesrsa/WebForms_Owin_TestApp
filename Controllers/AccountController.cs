@@ -57,7 +57,7 @@ namespace WebForms_Owin_TestApp.Controllers
         public ActionResult Logout()
         {
             AuthenticationManager.SignOut();
-            return Redirect("/");
+            return RedirectToLocal("~/");
         }
 
         private ActionResult RedirectToLocal(string returnUrl)
@@ -68,7 +68,7 @@ namespace WebForms_Owin_TestApp.Controllers
             }
             else
             {
-                return Redirect("~/Default.aspx");
+                return Redirect("~/");
             }
         }
 
