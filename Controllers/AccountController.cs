@@ -1,5 +1,4 @@
 ﻿using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.WsFederation;
 using System.Web;
 using System.Web.Mvc;
 using WebForms_Owin_TestApp.Models;
@@ -30,7 +29,7 @@ namespace WebForms_Owin_TestApp.Controllers
         [Route("account/externallogin")]
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
-            return new ChallengeResult(WsFederationAuthenticationDefaults.AuthenticationType, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
+            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
 
         [AllowAnonymous]

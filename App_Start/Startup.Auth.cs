@@ -1,4 +1,5 @@
-﻿using Microsoft.Owin;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.WsFederation;
@@ -14,7 +15,7 @@ namespace WebForms_Owin_TestApp
         {
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
-                AuthenticationType = WsFederationAuthenticationDefaults.AuthenticationType,
+                AuthenticationType = DefaultAuthenticationTypes.ExternalCookie,
                 LoginPath = new PathString("/account/login"),
                 LogoutPath = new PathString("/account/logout"),
             });
@@ -25,7 +26,7 @@ namespace WebForms_Owin_TestApp
             {
                 var wsFederation = new WsFederationAuthenticationOptions
                 {
-                    AuthenticationType = WsFederationAuthenticationDefaults.AuthenticationType,
+                    AuthenticationType = issuer.IssuerName,
                     Caption = issuer.Name,
                     MetadataAddress = issuer.MetadataUrl,
                     Wtrealm = claimsService.CurrentRealm.RealmUri
@@ -34,7 +35,7 @@ namespace WebForms_Owin_TestApp
                 app.UseWsFederationAuthentication(wsFederation);
             }
 
-            app.SetDefaultSignInAsAuthenticationType(WsFederationAuthenticationDefaults.AuthenticationType);
+            app.SetDefaultSignInAsAuthenticationType(DefaultAuthenticationTypes.ExternalCookie);
         }
     }
 }
