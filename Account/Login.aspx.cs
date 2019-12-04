@@ -1,5 +1,4 @@
 ﻿using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.WsFederation;
 using System;
 using System.Linq;
 using System.Web;
@@ -53,7 +52,7 @@ namespace WebForms_Owin_TestApp.Account
             {
                 RedirectUri = Request.QueryString["ReturnUrl"]
             },
-            WsFederationAuthenticationDefaults.AuthenticationType);
+            issuer.IssuerName);
         }
     }
 }

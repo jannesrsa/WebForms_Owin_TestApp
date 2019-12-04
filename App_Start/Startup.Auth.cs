@@ -1,14 +1,10 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
-using Microsoft.Owin.Extensions;
-using Microsoft.Owin.Infrastructure;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.DataHandler;
 using Microsoft.Owin.Security.WsFederation;
 using Owin;
-using System;
-using System.Threading.Tasks;
+using System.IdentityModel.Tokens;
 using WebForms_Owin_TestApp.Services;
 
 namespace WebForms_Owin_TestApp
@@ -31,10 +27,14 @@ namespace WebForms_Owin_TestApp
             {
                 var wsFederation = new WsFederationAuthenticationOptions
                 {
-                    AuthenticationType = WsFederationAuthenticationDefaults.AuthenticationType,
+                    AuthenticationType = issuer.IssuerName,
                     Caption = issuer.Name,
                     MetadataAddress = issuer.MetadataUrl,
                     Wtrealm = claimsService.CurrentRealm.RealmUri,
+                    TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = false
+                    }
                 };
 
                 app.UseWsFederationAuthentication(wsFederation);

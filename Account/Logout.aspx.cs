@@ -1,5 +1,4 @@
-﻿using Microsoft.Owin.Security.WsFederation;
-using System;
+﻿using System;
 using System.Web;
 
 namespace WebForms_Owin_TestApp.Account
@@ -14,7 +13,7 @@ namespace WebForms_Owin_TestApp.Account
 
         private void Signout()
         {
-            LoginHelper.AuthenticationManager.SignOut(WsFederationAuthenticationDefaults.AuthenticationType);
+            LoginHelper.AuthenticationManager.SignOut();
             HttpContext.Current.User = null;
         }
     }
