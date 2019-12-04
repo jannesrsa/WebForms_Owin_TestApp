@@ -4,6 +4,7 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.WsFederation;
 using Owin;
+using System.IdentityModel.Tokens;
 using WebForms_Owin_TestApp.Services;
 
 namespace WebForms_Owin_TestApp
@@ -29,7 +30,12 @@ namespace WebForms_Owin_TestApp
                     AuthenticationType = issuer.IssuerName,
                     Caption = issuer.Name,
                     MetadataAddress = issuer.MetadataUrl,
-                    Wtrealm = claimsService.CurrentRealm.RealmUri
+                    Wtrealm = claimsService.CurrentRealm.RealmUri,
+                    TokenValidationParameters = new TokenValidationParameters
+                    {
+                        //Available for everyone!
+                        ValidateIssuer = false
+                    }
                 };
 
                 app.UseWsFederationAuthentication(wsFederation);
