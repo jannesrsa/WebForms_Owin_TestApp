@@ -1,5 +1,4 @@
 ﻿using Microsoft.Owin.Security;
-using System;
 using System.Web;
 
 namespace WebForms_Owin_TestApp.Account
@@ -21,7 +20,7 @@ namespace WebForms_Owin_TestApp.Account
 
         public static void RedirectToReturnUrl(string returnUrl, HttpResponse response)
         {
-            if (!string.IsNullOrEmpty(returnUrl) && 
+            if (!string.IsNullOrEmpty(returnUrl) &&
                 IsLocalUrl(returnUrl))
             {
                 response.Redirect(returnUrl);
