@@ -7,10 +7,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ModernizeWebFormsSample.Auth.New
+
+namespace WebForms_Owin_TestApp
 {
-
-
     public partial class Site
     {
 

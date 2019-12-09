@@ -3,6 +3,7 @@ using Microsoft.Owin.Security.WsFederation;
 using SourceCode.Security.Claims;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using WebForms_Owin_TestApp.Helpers;
 
@@ -10,21 +11,32 @@ namespace WebForms_Owin_TestApp.Services
 {
     public class ClaimsService
     {
+        private readonly string CurrentRealm = ConfigurationManager.AppSettings["ida:Realm"];
+
         public ClaimsService()
         {
             var claimsServer = ConnectionHelper.GetServer<ClaimsManagement>();
             using (claimsServer.Connection)
             {
-                CurrentRealm = claimsServer.GetRealm("https://k2.denallix.com/WebForms_Owin_TestApp/");
+                Realm = claimsServer.GetRealm(CurrentRealm);
+                if (Realm?.RealmUri == null)
+                {
+                    throw new ArgumentNullException(nameof(Realm));
+                }
 
-                RealmPathBase = new Uri(CurrentRealm.RealmUri).AbsolutePath;
+                RealmPathBase = new Uri(Realm.RealmUri).AbsolutePath;
 
-                Issuers = CurrentRealm.Issuers
+                if (Realm.Issuers == null)
+                {
+                    throw new ArgumentNullException(nameof(Realm.Issuers));
+                }
+
+                Issuers = Realm.Issuers
                     .Where(iss => !string.IsNullOrWhiteSpace(iss.MetadataUrl) && iss.UseForLogin);
             }
         }
 
-        public Realm CurrentRealm { get; }
+        public Realm Realm { get; }
 
         public IEnumerable<Issuer> Issuers { get; }
 

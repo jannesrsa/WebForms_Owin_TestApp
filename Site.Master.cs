@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace ModernizeWebFormsSample.Auth.New
+namespace WebForms_Owin_TestApp
 {
     public partial class Site : System.Web.UI.MasterPage
     {

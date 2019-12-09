@@ -30,7 +30,7 @@ namespace WebForms_Owin_TestApp
                     AuthenticationType = issuer.IssuerName,
                     Caption = issuer.Name,
                     MetadataAddress = issuer.MetadataUrl,
-                    Wtrealm = claimsService.CurrentRealm.RealmUri,
+                    Wtrealm = claimsService.Realm.RealmUri,
                     TokenValidationParameters = new TokenValidationParameters
                     {
                         //Available for everyone!
